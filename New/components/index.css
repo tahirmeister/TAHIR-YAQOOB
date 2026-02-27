@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  
+  --color-brand-black: #000814;
+  --color-brand-white: #001d3d;
+  --color-brand-grey: #F8F9FA;
+  --color-brand-dark-grey: #000814;
+  --color-brand-gold: #D4AF37;
+
+  --color-black: #000000;
+  --color-white: #FFFFFF;
+}
+
+@layer base {
+  body {
+    @apply bg-brand-white text-white font-sans antialiased transition-colors duration-500;
+  }
+  
+  .dark body {
+    @apply bg-brand-black text-white;
+  }
+}
+
+.gold-gradient {
+  background: linear-gradient(135deg, #F9F295 0%, #E0AA3E 25%, #B8860B 50%, #E0AA3E 75%, #F9F295 100%);
+  background-size: 200% auto;
+  animation: shine 6s linear infinite;
+}
+
+.gold-text-gradient {
+  background: linear-gradient(135deg, #F9F295 0%, #E0AA3E 25%, #B8860B 50%, #E0AA3E 75%, #F9F295 100%);
+  background-size: 200% auto;
+  animation: shine 6s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.glass-effect {
+  @apply bg-white/10 backdrop-blur-md border border-white/20;
+}
+
+.monochrome-input {
+  @apply bg-transparent border-b border-white/20 focus:border-brand-gold outline-none transition-colors py-2 text-white placeholder:text-white/20;
+}
+
+.dark .monochrome-input {
+  @apply border-white/10 focus:border-brand-gold text-white;
+}
+
+.dark .bg-brand-white {
+  @apply bg-brand-black;
+}
+
+.dark .bg-brand-grey {
+  @apply bg-brand-dark-grey;
+}
+
+.dark .bg-white {
+  @apply bg-brand-black;
+}
+
+.dark .border-black\/5 {
+  @apply border-white/5;
+}
+
+.dark .border-black\/10 {
+  @apply border-white/10;
+}
+
+.dark .border-black\/20 {
+  @apply border-white/20;
+}
+
+.dark .hover\:bg-black\/5:hover {
+  @apply hover:bg-white/5;
+}
+
+.dark .bg-black {
+  @apply bg-brand-black;
+}
+
+.dark .bg-white\/10 {
+  @apply bg-black/10;
+}
+
+.dark .bg-black\/5 {
+  @apply bg-white/5;
+}
+
+.dark .bg-black\/30 {
+  @apply bg-white/30;
+}
+
+.dark .border-white\/20 {
+  @apply border-white/10;
+}
+
+.dark .border-white\/10 {
+  @apply border-white/5;
+}
