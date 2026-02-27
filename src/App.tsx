@@ -1724,7 +1724,7 @@ const ContactSection = ({ standalone, onBack }: { standalone?: boolean, onBack?:
   );
 };
 
-const Footer = () => {
+const Footer = ({ setView }: { setView: (view: string) => void }) => {
   return (
     <footer className="bg-black text-white pt-24 pb-12">
       <div className="max-w-7xl mx-auto px-6">
@@ -1746,10 +1746,10 @@ const Footer = () => {
           <div>
             <h4 className="text-[10px] font-bold tracking-widest uppercase mb-8 text-brand-gold">Quick Links</h4>
             <ul className="space-y-4 text-xs text-white/40">
-              <li><a href="#" className="hover:text-brand-gold transition-colors">Home</a></li>
-              <li><a href="#" className="hover:text-brand-gold transition-colors">Tour Packages</a></li>
-              <li><a href="#" className="hover:text-brand-gold transition-colors">Private Charter</a></li>
-              <li><a href="#" className="hover:text-brand-gold transition-colors">About Us</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('home'); }} className="hover:text-brand-gold transition-colors">Home</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('about'); }} className="hover:text-brand-gold transition-colors">About Us</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('faq'); }} className="hover:text-brand-gold transition-colors">FAQs</a></li>
+              <li><a href="#" onClick={(e) => { e.preventDefault(); setView('contact'); }} className="hover:text-brand-gold transition-colors">Contact</a></li>
             </ul>
           </div>
 
@@ -2088,6 +2088,79 @@ const SearchResults = ({ currency, params, type, onBack, onInquire }: { currency
 
 // --- Main App ---
 
+const FAQPage = ({ onBack }: { onBack: () => void }) => {
+  const faqs = [
+    {
+      question: 'What types of travel packages do you offer?',
+      answer: 'We offer a wide range of packages including luxury vacations, spiritual journeys like Umrah, bespoke holiday packages, and private charters. We also provide services like visa assistance, car rentals, and travel insurance.',
+    },
+    {
+      question: 'How do I book a package?',
+      answer: 'You can book a package through our website by using the search functionality and following the on-screen instructions. For bespoke packages or special requirements, please contact our support team directly.',
+    },
+    {
+      question: 'Can I customize my travel package?',
+      answer: 'Absolutely. We specialize in creating bespoke travel experiences. Contact us with your requirements, and our travel experts will help you design your perfect trip.',
+    },
+    {
+      question: 'What is your cancellation policy?',
+      answer: 'Cancellation policies vary depending on the package and services booked. Please refer to the terms and conditions of your specific booking or contact our customer service for detailed information.',
+    },
+    {
+      question: 'Do you offer travel insurance?',
+      answer: 'Yes, we offer comprehensive travel insurance options to ensure you are covered during your trip. You can add travel insurance to your package during the booking process.',
+    },
+  ];
+
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  return (
+    <section className="py-40 bg-brand-white dark:bg-brand-black">
+      <div className="max-w-4xl mx-auto px-6">
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-bold font-serif gold-text-gradient mb-4">Frequently Asked Questions</h1>
+          <p className="text-lg text-white/60">Find answers to common questions about our services and booking process.</p>
+        </div>
+        <div className="space-y-4">
+          {faqs.map((faq, index) => (
+            <div key={index} className="border-b border-white/10 pb-4">
+              <button
+                onClick={() => setOpenIndex(openIndex === index ? null : index)}
+                className="w-full flex justify-between items-center text-left py-4"
+              >
+                <span className="text-xl font-semibold text-white">{faq.question}</span>
+                <ChevronDown className={`transform transition-transform duration-300 ${openIndex === index ? 'rotate-180' : ''}`} />
+              </button>
+              <AnimatePresence>
+                {openIndex === index && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0, marginTop: 0 }}
+                    animate={{ height: 'auto', opacity: 1, marginTop: '1rem' }}
+                    exit={{ height: 0, opacity: 0, marginTop: 0 }}
+                    className="overflow-hidden"
+                  >
+                    <p className="text-white/70 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-16">
+            <button 
+              onClick={onBack}
+              className="gold-gradient text-black px-12 py-4 text-sm font-bold tracking-[0.2em] uppercase hover:opacity-90 transition-all shadow-lg"
+            >
+              Back to Home
+            </button>
+        </div>
+      </div>
+    </section>
+  );
+};
+
 const WhatsAppButton = () => {
   return (
     <motion.a
@@ -2194,6 +2267,19 @@ export default function App() {
       );
     }
 
+    if (view === 'faq') {
+      return (
+        <motion.div
+          key="faq"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+        >
+          <FAQPage onBack={() => setView('home')} />
+        </motion.div>
+      );
+    }
+
     if (view.startsWith('service-')) {
       const serviceName = view.replace('service-', '');
       return (
@@ -2231,7 +2317,7 @@ export default function App() {
         {renderView()}
       </AnimatePresence>
 
-      <Footer />
+      <Footer setView={setView} />
       <WhatsAppButton />
     </div>
   );
